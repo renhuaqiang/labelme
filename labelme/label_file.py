@@ -13,7 +13,6 @@ class LabelFileError(Exception):
 
 
 class LabelFile(object):
-
     suffix = '.json'
 
     def __init__(self, filename=None):
@@ -31,12 +30,12 @@ class LabelFile(object):
             'lineColor',
             'fillColor',
             'shapes',  # polygonal annotations
-            'flags',   # image level flags
+            'flags',  # image level flags
             'imageHeight',
             'imageWidth',
         ]
         try:
-            with open(filename, 'rb' if PY2 else 'r') as f:
+            with open(filename, 'rb' if PY2 else 'r', encoding='utf-8') as f:
                 data = json.load(f)
             if data['imageData'] is not None:
                 imageData = base64.b64decode(data['imageData'])
@@ -101,17 +100,17 @@ class LabelFile(object):
         return imageHeight, imageWidth
 
     def save(
-        self,
-        filename,
-        shapes,
-        imagePath,
-        imageHeight,
-        imageWidth,
-        imageData=None,
-        lineColor=None,
-        fillColor=None,
-        otherData=None,
-        flags=None,
+            self,
+            filename,
+            shapes,
+            imagePath,
+            imageHeight,
+            imageWidth,
+            imageData=None,
+            lineColor=None,
+            fillColor=None,
+            otherData=None,
+            flags=None,
     ):
         if imageData is not None:
             imageData = base64.b64encode(imageData).decode('utf-8')
@@ -136,7 +135,7 @@ class LabelFile(object):
         for key, value in otherData.items():
             data[key] = value
         try:
-            with open(filename, 'wb' if PY2 else 'w') as f:
+            with open(filename, 'wb' if PY2 else 'w', encoding='utf8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
             self.filename = filename
         except Exception as e:
